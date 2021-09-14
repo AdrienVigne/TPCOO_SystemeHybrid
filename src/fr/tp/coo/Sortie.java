@@ -33,6 +33,10 @@ public class Sortie implements Observable{
 
     public void setValeur(double valeur) {
         this.valeur = valeur;
+        if(!Double.isNaN(this.valeur)){
+            this.notifierTous();
+        }
+        System.out.println("Val NaN");
     }
 
     @Override

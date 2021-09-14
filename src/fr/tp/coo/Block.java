@@ -14,6 +14,11 @@ public abstract class Block implements ModeleAtomique{
     double tn;
     double tr;
 
+    public Block(){
+        listeEntree = new ArrayList<>();
+        listeSortie = new ArrayList<>();
+        ensembleEtat = new HashMap<>();
+    }
     public double getE() {
         return e;
     }
@@ -54,5 +59,17 @@ public abstract class Block implements ModeleAtomique{
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    @Override
+    public double avancement() {
+        return ensembleEtat.get(etat_courant.nom).getTemps();
+    }
+
+    @Override
+    public void init() {
+        etat_courant = etat_initial;
+        listeSortie.forEach(s -> s.setValeur(Double.NaN));
+        listeEntree.forEach(e -> e.setValeur(Double.NaN));
     }
 }

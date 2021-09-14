@@ -8,13 +8,23 @@ public class Main {
 
     public static void main(String[] args) {
 	// write your code here
+        Buffer B = new Buffer();
+        Generateur G = new Generateur(2);
+        Processeur P = new Processeur(3);
+        G.job.ajoutObservateur(B.job);
+        P.done.ajoutObservateur(B.done);
+        B.req.ajoutObservateur(P.req);
+
         ArrayList<Block> listeComposant = new ArrayList<>();
-        double t = 0
-        listeComposant.forEach(comp -> comp.init());
+        listeComposant.add(B);
+        listeComposant.add(G);
+        listeComposant.add(P);
+        double t = 0;
+        listeComposant.forEach(Block::init);
         listeComposant.forEach(comp -> comp.setTr(comp.avancement()));
 
-        ArrayList<double> listeTr = new ArrayList<double>();
-        double tr_min = 0;
-        listeComposant.forEach(comp -> {listeTr.add(comp.getTr())});
+//        ArrayList<double> listeTr = new ArrayList<double>();
+//        double tr_min = 0;
+//        listeComposant.forEach(comp -> listeTr.add(comp.getTr()));
     }
 }

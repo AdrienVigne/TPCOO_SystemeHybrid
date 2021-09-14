@@ -1,11 +1,11 @@
 package fr.tp.coo;
 
-public abstract class Etat {
+public class Etat {
     double temps;
     String nom;
-    public Etat(double tmps,String nom){
-        this.temps = tmps;
+    public Etat(String nom,double temps){
         this.nom = nom;
+        this.temps =temps;
     }
 
     public double getTemps() {
