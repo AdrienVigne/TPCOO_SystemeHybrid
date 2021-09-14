@@ -1,5 +1,5 @@
 package fr.tp.coo;
 
 public interface Observateur {
-    void ajout
+    void recevoirNotification(Observable obs,double val);
 }
