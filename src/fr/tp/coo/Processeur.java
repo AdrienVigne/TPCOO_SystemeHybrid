@@ -1,5 +1,7 @@
 package fr.tp.coo;
 
+import javax.swing.*;
+
 public class Processeur extends Block {
     Etat e1;
     Etat e2;
@@ -11,9 +13,24 @@ public class Processeur extends Block {
         ensembleEtat.put("free",e1);
         ensembleEtat.put("busy",e2);
         etat_initial = e1;
-
+        req = new Entree("req","bool");
+        done = new Sortie("done","bool");
+        listeEntree.add(req);
+        listeSortie.add(done);
+        this.setNom("Processor");
     }
 
+    @Override
+    public String toString() {
+        return "Processeur{" +
+                "listeEntree=" + listeEntree +
+                ", listeSortie=" + listeSortie +
+                ", ensembleEtat=" + ensembleEtat +
+                ", etat_initial=" + etat_initial +
+                ", tr=" + tr +
+                ", nom='" + nom + '\'' +
+                '}';
+    }
 
     @Override
     public void externe(Sortie s) {

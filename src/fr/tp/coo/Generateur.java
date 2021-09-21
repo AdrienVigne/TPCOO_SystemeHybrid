@@ -10,6 +10,19 @@ public class Generateur extends Block {
         ensembleEtat.put("s",e1);
         job = new Sortie("job","bool");
         listeSortie.add(job);
+        this.setNom("Generator");
+    }
+
+    @Override
+    public String toString() {
+        return "Generateur{" +
+                "listeEntree=" + listeEntree +
+                ", listeSortie=" + listeSortie +
+                ", ensembleEtat=" + ensembleEtat +
+                ", etat_initial=" + etat_initial +
+                ", tr=" + tr +
+                ", nom='" + nom +
+                '}';
     }
 
     @Override

@@ -22,7 +22,29 @@ public class Buffer extends Block{
         listeEntree.add(done);
 
         etat_initial = a;
+
+        this.setNom("Buffer");
     }
+    @Override
+    public String toString() {
+        return "Buffer{" +
+                "listeEntree=" + listeEntree +
+                ", listeSortie=" + listeSortie +
+                ", ensembleEtat=" + ensembleEtat +
+                ", etat_initial=" + etat_initial +
+                ", tr=" + tr +
+                ", nom='" + nom + '\'' +
+                ", a=" + a +
+                ", b=" + b +
+                ", c=" + c +
+                ", req=" + req +
+                ", job=" + job +
+                ", done=" + done +
+                ", q=" + q +
+                '}';
+    }
+
+
 
     @Override
     public void externe(Sortie s) {

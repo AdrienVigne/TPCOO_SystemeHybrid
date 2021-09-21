@@ -19,12 +19,18 @@ public class Main {
         listeComposant.add(B);
         listeComposant.add(G);
         listeComposant.add(P);
-        double t = 0;
+        System.out.println(listeComposant);
+
         listeComposant.forEach(Block::init);
         listeComposant.forEach(comp -> comp.setTr(comp.avancement()));
 
-//        ArrayList<double> listeTr = new ArrayList<double>();
-//        double tr_min = 0;
-//        listeComposant.forEach(comp -> listeTr.add(comp.getTr()));
+        ArrayList<Double> listeTr = new ArrayList<>();
+        double tr_min = 0;
+        listeComposant.forEach(comp -> listeTr.add(comp.getTr()));
+        System.out.println(listeTr);
+        tr_min = Collections.min(listeTr);
+        int minIndex = listeTr.indexOf(tr_min);
+
+        System.out.println("Index : "+minIndex+" composant associé : "+ listeComposant.get(minIndex).nom +" tr_min : "+tr_min);
     }
 }

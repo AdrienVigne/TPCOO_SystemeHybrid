@@ -8,6 +8,14 @@ public class Etat {
         this.temps =temps;
     }
 
+    @Override
+    public String toString() {
+        return "Etat{" +
+                "temps=" + temps +
+                ", nom='" + nom + '\'' +
+                '}';
+    }
+
     public double getTemps() {
         return temps;
     }

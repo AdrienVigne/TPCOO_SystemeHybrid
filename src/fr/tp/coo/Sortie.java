@@ -11,6 +11,15 @@ public class Sortie implements Observable{
 
     }
 
+    @Override
+    public String toString() {
+        return "Sortie{" +
+                "nom='" + nom + '\'' +
+                ", type='" + type + '\'' +
+                ", valeur=" + valeur +
+                '}';
+    }
+
     public void setNom(String nom) {
         this.nom = nom;
     }

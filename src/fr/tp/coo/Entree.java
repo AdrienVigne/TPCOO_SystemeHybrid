@@ -12,6 +12,16 @@ public class Entree implements Observateur{
 
     }
 
+    @Override
+    public String toString() {
+        return "Entree{" +
+                "nom='" + nom + '\'' +
+                ", type='" + type + '\'' +
+                ", valeur=" + valeur +
+                ", flag=" + flag +
+                '}';
+    }
+
     public void setNom(String nom) {
         this.nom = nom;
     }
