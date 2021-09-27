@@ -7,5 +7,6 @@ public interface Observable {
     void ajoutObservateur(Observateur obs);
     void supressionObservateur(Observateur obs);
     void notifierTous();
+    void notifierTous(double t);
 
 }

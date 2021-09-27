@@ -59,6 +59,11 @@ public class Entree implements Observateur{
 
     }
 
+    @Override
+    public void recevoirNotification(Observable obs, double val, double temps) {
+        this.recevoirNotification(obs,val);
+    }
+
     public void deactivateFlag() {
         this.flag = Boolean.FALSE;
     }

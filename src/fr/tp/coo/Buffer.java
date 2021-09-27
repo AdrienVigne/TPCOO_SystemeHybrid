@@ -1,10 +1,15 @@
 package fr.tp.coo;
 
+import chart.Chart;
+import chart.ChartFrame;
+
 public class Buffer extends Block {
     Etat a, b, c;
     Sortie req;
     Entree job, done;
     double q = 0;
+    ChartFrame frame;
+    Chart Q;
 
     public Buffer() {
         a = new Etat("a", Double.POSITIVE_INFINITY);
@@ -25,6 +30,11 @@ public class Buffer extends Block {
         etat_initial = a;
 
         this.setNom("Buffer");
+
+        frame = new ChartFrame("toto","tata");
+        Q = new Chart("Q");
+        frame.addToLineChartPane(Q);
+        Q.addDataToSeries(0,q);
     }
 
     @Override
@@ -41,18 +51,21 @@ public class Buffer extends Block {
         if (etat_courant == a && job.getFlag()) {
             q++;
             etat_courant = b;
+            Q.addDataToSeries(tl,q);
         }
         if (etat_courant == c) {
-            if (job.getFlag()) {
-                q++;
-            }
-            if (done.getFlag()) {
+             if (done.getFlag()) {
                 if (q == 0) {
                     etat_courant = a;
                 } else {
                     etat_courant = b;
                 }
+            }else if (job.getFlag()) {
+                q++;
+
+                Q.addDataToSeries(tl,q);
             }
+
         }
     }
 
@@ -61,6 +74,8 @@ public class Buffer extends Block {
         if (etat_courant == b) {
             q--;
             etat_courant = c;
+
+            Q.addDataToSeries(tl,q);
         }
     }
 
