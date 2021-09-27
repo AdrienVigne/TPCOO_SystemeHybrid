@@ -16,21 +16,17 @@ public class Generateur extends Block {
     @Override
     public String toString() {
         return "Generateur{" +
-                "listeEntree=" + listeEntree +
-                ", listeSortie=" + listeSortie +
-                ", ensembleEtat=" + ensembleEtat +
-                ", etat_initial=" + etat_initial +
                 ", tr=" + tr +
                 ", nom='" + nom +
                 '}';
     }
 
     @Override
-    public void externe(Sortie s) {
+    public void externe() {
     }
 
     @Override
-    public void interne(Entree e ) {
+    public void interne() {
 
     }
 
