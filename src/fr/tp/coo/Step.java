@@ -2,29 +2,25 @@ package fr.tp.coo;
 
 public class Step extends Block {
     Etat bas;
-    Etat attente, fin;
+    Etat init;
     Etat haut;
     Sortie val;
-    double xi, xf;
+    double xi, xf, valeur_courante;
+
 
     public Step(double xi, double xf, double tf) {
         this.xi = xi;
         this.xf = xf;
-        bas = new Etat("bas", 0);
-        attente = new Etat("attente", tf);
-        haut = new Etat("haut", 0);
-        fin = new Etat("fin", Double.POSITIVE_INFINITY);
-        ensembleEtat.put("bas", bas);
-        ensembleEtat.put("attente", attente);
-        ensembleEtat.put("haut", haut);
-        ensembleEtat.put("fin", fin);
-
+        this.valeur_courante = xi;
+        init = new Etat("init", 0);
+        bas = new Etat("bas", tf);
+        haut = new Etat("haut", Double.POSITIVE_INFINITY);
+        this.ensembleEtat.put("init", init);
+        this.ensembleEtat.put("bas", bas);
+        this.ensembleEtat.put("haut", haut);
         val = new Sortie("val", "double");
-        listeSortie.add(val);
-
-        etat_initial = bas;
-        etat_courant = bas;
-
+        this.listeSortie.add(val);
+        this.etat_initial = init;
         this.setNom("Stepper");
     }
 
@@ -45,26 +41,25 @@ public class Step extends Block {
 
     @Override
     public void interne() {
-        if (etat_courant == bas) {
-            etat_courant = attente;
+        if (this.etat_courant == init) {
+            this.etat_courant = bas;
         }
-        if (etat_courant == attente) {
-            etat_courant = haut;
-        }
-        if(etat_courant == haut){
-            etat_courant = fin;
+        if (this.etat_courant == bas) {
+            this.etat_courant = haut;
+            this.valeur_courante = this.xf;
         }
     }
 
     @Override
     public void sortie() {
-        if (etat_courant == bas) {
-            val.setValeur(xi);
-
-        }
-        if (etat_courant == haut || etat_courant == fin) {
-            val.setValeur(xf);
-        }
+//        if (this.etat_courant == bas || this.etat_courant == init) {
+//            this.val.setValeur(this.valeur_courante);
+//
+//        }
+//        if (this.etat_courant == haut ) {
+//            this.val.setValeur(this.valeur_courante);
+//        }
+        this.val.setValeur(this.valeur_courante);
         System.out.println(this.nom + " : " + val.valeur);
 
     }

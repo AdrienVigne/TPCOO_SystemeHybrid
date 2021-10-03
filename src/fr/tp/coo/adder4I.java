@@ -41,7 +41,7 @@ public class adder4I extends Block{
                     this.res += e.getValeur();
                 }
             }
-            System.out.println("resulatat au cours du temps : "+this.res);
+            System.out.println("resultat au cours du temps : "+this.res);
             etat_courant = somme;
         }
     }
