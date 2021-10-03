@@ -56,8 +56,10 @@ public class adder4I extends Block{
 
     @Override
     public void sortie() {
-        System.out.println("Sortie du adder : "+this.res);
-        add.setValeur(this.res);
-        add.setValeur(this.res,this.tl);
+        if(this.etat_courant == somme) {
+            System.out.println("Sortie du adder : " + this.res);
+            add.setValeur(this.res);
+//            add.setValeur(this.res, this.tl);
+        }
     }
 }
