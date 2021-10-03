@@ -5,13 +5,13 @@ public class Step extends Block {
     Etat init;
     Etat haut;
     Sortie val;
-    double xi, xf, valeur_courante;
+    double xi, xf, valeurCourante;
 
 
     public Step(double xi, double xf, double tf) {
         this.xi = xi;
         this.xf = xf;
-        this.valeur_courante = xi;
+        this.valeurCourante = xi;
         init = new Etat("init", 0);
         bas = new Etat("bas", tf);
         haut = new Etat("haut", Double.POSITIVE_INFINITY);
@@ -43,23 +43,22 @@ public class Step extends Block {
     public void interne() {
         if (this.etat_courant == init) {
             this.etat_courant = bas;
-        }
-        if (this.etat_courant == bas) {
+        }else if (this.etat_courant == bas) {
             this.etat_courant = haut;
-            this.valeur_courante = this.xf;
+            this.valeurCourante = this.xf;
         }
     }
 
     @Override
     public void sortie() {
 //        if (this.etat_courant == bas || this.etat_courant == init) {
-//            this.val.setValeur(this.valeur_courante);
+//            this.val.setValeur(this.valeurCourante);
 //
 //        }
 //        if (this.etat_courant == haut ) {
-//            this.val.setValeur(this.valeur_courante);
+//            this.val.setValeur(this.valeurCourante);
 //        }
-        this.val.setValeur(this.valeur_courante);
+        this.val.setValeur(this.valeurCourante);
         System.out.println(this.nom + " : " + val.valeur);
 
     }

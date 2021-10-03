@@ -112,7 +112,7 @@ public class Main {
         listeComposant.forEach(block -> block.init());
         listeComposant.forEach(comp -> comp.setTr(comp.avancement()));
         while (t < tfin) {
-            q.addDataToSeries(t,((Step)listeComposant.get(0)).valeur_courante);
+            q.addDataToSeries(t,((Step)listeComposant.get(0)).valeurCourante);
             ArrayList<Block> listeComposantImms = new ArrayList<>();
             ArrayList<Double> listeTr = new ArrayList<>();
             double tr_min = 0;
@@ -219,14 +219,14 @@ public class Main {
             int i = 0;
             for (Chart c : listChart){
                 if(i<=3){
-                    c.addDataToSeries(t,((Step)listeComposant.get(i)).valeur_courante);
+                    c.addDataToSeries(t,((Step)listeComposant.get(i)).valeurCourante);
                 }else {
                     c.addDataToSeries(t,((adder4I)listeComposant.get(i)).res);
                 }
 
                 i++;
             }
-//            s1.addDataToSeries(t,((Step)listeComposant.get(0)).valeur_courante);
+//            s1.addDataToSeries(t,((Step)listeComposant.get(0)).valeurCourante);
             ArrayList<Block> listeComposantImms = new ArrayList<>();
             ArrayList<Double> listeTr = new ArrayList<>();
             double tr_min = 0;
@@ -330,10 +330,10 @@ public class Main {
         while (t < tfin) {
             int i = 0;
             for (Chart c : listChart){
-                c.addDataToSeries(t,((Step)listeComposant.get(i)).valeur_courante);
+                c.addDataToSeries(t,((Step)listeComposant.get(i)).valeurCourante);
                 i++;
             }
-//            s1.addDataToSeries(t,((Step)listeComposant.get(0)).valeur_courante);
+//            s1.addDataToSeries(t,((Step)listeComposant.get(0)).valeurCourante);
             ArrayList<Block> listeComposantImms = new ArrayList<>();
             ArrayList<Double> listeTr = new ArrayList<>();
             double tr_min = 0;
