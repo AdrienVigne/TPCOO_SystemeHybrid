@@ -23,24 +23,20 @@ public class Processeur extends Block {
     @Override
     public String toString() {
         return "Processeur{" +
-                "listeEntree=" + listeEntree +
-                ", listeSortie=" + listeSortie +
-                ", ensembleEtat=" + ensembleEtat +
-                ", etat_initial=" + etat_initial +
                 ", tr=" + tr +
                 ", nom='" + nom + '\'' +
                 '}';
     }
 
     @Override
-    public void externe(Sortie s) {
+    public void externe() {
         if (etat_courant==e1 && req.getFlag()){
             etat_courant = e2;
         }
     }
 
     @Override
-    public void interne(Entree e) {
+    public void interne() {
         if(etat_courant == e2){
             etat_courant = e1;
         }

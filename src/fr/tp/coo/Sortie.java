@@ -1,9 +1,12 @@
 package fr.tp.coo;
 
+import java.util.ArrayList;
+
 public class Sortie implements Observable{
     String nom;
     String type;
     double valeur = 0;
+    ArrayList<Observateur> listeObservateur  = new ArrayList<>();
 
     public Sortie(String nom, String type){
         this.nom = nom;
@@ -45,21 +48,36 @@ public class Sortie implements Observable{
         if(!Double.isNaN(this.valeur)){
             this.notifierTous();
         }
-        System.out.println("Val NaN");
+//        System.out.println("Val NaN");
+    }
+
+    public void setValeur(double valeur,double temps) {
+        this.valeur = valeur;
+        if(!Double.isNaN(this.valeur)){
+            this.notifierTous(temps);
+        }
+//        System.out.println("Val NaN");
     }
 
     @Override
     public void ajoutObservateur(Observateur obs) {
-        listeObservateur.add(obs);
+        this.listeObservateur.add(obs);
     }
 
     @Override
     public void supressionObservateur(Observateur obs) {
-        listeObservateur.remove(obs);
+        this.listeObservateur.remove(obs);
     }
 
     @Override
     public void notifierTous() {
-        listeObservateur.forEach(obs -> obs.recevoirNotification(this,this.valeur));
+        this.listeObservateur.forEach(obs -> obs.recevoirNotification(this,this.valeur));
     }
+
+    @Override
+    public void notifierTous(double t){
+        this.listeObservateur.forEach(obs -> obs.recevoirNotification(this,this.valeur,t));
+    }
+
+
 }

@@ -72,4 +72,24 @@ public abstract class Block implements ModeleAtomique{
         listeSortie.forEach(s -> s.setValeur(Double.NaN));
         listeEntree.forEach(e -> e.setValeur(Double.NaN));
     }
+
+    public Boolean entreeImpactee(){
+        Boolean rtr = Boolean.FALSE;
+        for(Entree e : listeEntree){
+            rtr |= e.getFlag();
+        }
+        return rtr;
+
+    }
+
+    @Override
+    public void conflict() {
+        this.externe();
+    }
+
+    @Override
+    public void finCycle() {
+        this.listeEntree.forEach(entree -> {entree.setValeur(Double.NaN);entree.deactivateFlag();});
+        this.listeSortie.forEach(sortie -> sortie.setValeur(Double.NaN));
+    }
 }

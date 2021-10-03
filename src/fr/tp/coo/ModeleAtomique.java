@@ -1,15 +1,19 @@
 package fr.tp.coo;
 
 public interface ModeleAtomique {
-    void externe(Sortie s);
+    void externe();
 
-    void interne(Entree e);
+    void interne();
 
     double avancement();
 
     void sortie();
 
     void init();
+
+    void conflict();
+
+    void finCycle();
 
 }
 
