@@ -124,9 +124,11 @@ public class Main {
             for (Block comp : listeComposant)
                 if (tr_min == comp.getTr())
                     listeComposantImms.add(comp);
-//            System.out.println(listeComposantImms);
+            System.out.println(listeComposantImms);
             t = t + tr_min;
-            System.out.println("temps : " + t + "tr_min "+tr_min);
+
+            System.out.println("temps : " + t + " tr_min "+tr_min);
+
 //            for (Block comp : listeComposant) {
 //                comp.listeSortie.forEach(sortie -> System.out.println(sortie.valeur));
 //                System.out.println(comp.getE());

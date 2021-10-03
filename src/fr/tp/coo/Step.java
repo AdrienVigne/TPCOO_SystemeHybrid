@@ -2,7 +2,7 @@ package fr.tp.coo;
 
 public class Step extends Block {
     Etat bas;
-    Etat init;
+    Etat init,fin;
     Etat haut;
     Sortie val;
     double xi, xf, valeurCourante;
@@ -14,10 +14,12 @@ public class Step extends Block {
         this.valeurCourante = xi;
         init = new Etat("init", 0);
         bas = new Etat("bas", tf);
-        haut = new Etat("haut", Double.POSITIVE_INFINITY);
+        haut = new Etat("haut", 0);
+        fin = new Etat("fin", Double.POSITIVE_INFINITY);
         this.ensembleEtat.put("init", init);
         this.ensembleEtat.put("bas", bas);
         this.ensembleEtat.put("haut", haut);
+        this.ensembleEtat.put("fin",fin);
         val = new Sortie("val", "double");
         this.listeSortie.add(val);
         this.etat_initial = init;
@@ -43,23 +45,25 @@ public class Step extends Block {
     public void interne() {
         if (this.etat_courant == init) {
             this.etat_courant = bas;
-        }else if (this.etat_courant == bas) {
+        } else if (this.etat_courant == bas) {
             this.etat_courant = haut;
             this.valeurCourante = this.xf;
+        }else if(this.etat_courant == haut){
+            this.etat_courant = fin;
         }
     }
 
     @Override
     public void sortie() {
-//        if (this.etat_courant == bas || this.etat_courant == init) {
-//            this.val.setValeur(this.valeurCourante);
-//
-//        }
+        if (this.etat_courant == haut || this.etat_courant == init) {
+            this.val.setValeur(this.valeurCourante);
+
+        }
 //        if (this.etat_courant == haut ) {
 //            this.val.setValeur(this.valeurCourante);
 //        }
-        this.val.setValeur(this.valeurCourante);
-        System.out.println(this.nom + " : " + val.valeur);
+//        this.val.setValeur(this.valeurCourante);
+//        System.out.println(this.nom + " : " + val.valeur);
 
     }
 }
