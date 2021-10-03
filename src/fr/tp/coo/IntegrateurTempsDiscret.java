@@ -1,6 +1,5 @@
 package fr.tp.coo;
 
-import java.util.ConcurrentModificationException;
 
 public class IntegrateurTempsDiscret extends Block {
     Etat attente, sortie;
