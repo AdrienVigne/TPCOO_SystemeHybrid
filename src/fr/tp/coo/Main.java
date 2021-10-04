@@ -16,8 +16,290 @@ public class Main {
 //        ensembleStepper();
 //        integrateurTempsDiscret();
 //        integrateurEventDiscret();
-        comparaissonIntegrateur();
+//        comparaissonIntegrateur();
+//        ode2();
+        bouncingball();
     }
+    public static void bouncingball(){
+        Constante g = new Constante(-9.81);
+        IntegrateurEventDiscret inte1 = new IntegrateurEventDiscret(0.1);
+        IntegrateurEventDiscret inte2 = new IntegrateurEventDiscret(0.1);
+        inte2.val = 10;
+        g.constante.ajoutObservateur(inte1.pval);
+        inte1.res.ajoutObservateur(inte2.pval);
+
+        double tfin = 3;
+        ArrayList<Block> listeComposant = new ArrayList<>();
+        listeComposant.add(g);
+        listeComposant.add(inte1);
+        listeComposant.add(inte2);
+
+        ordonnanceurBoucingBall(listeComposant,tfin);
+
+    }
+    public static void ordonnanceurBoucingBall(ArrayList<Block> listeComposant, double tfin) {
+        ChartFrame frame = new ChartFrame("EnsembleStepper + adder + iintegrateur","4 Steppper +add +int");
+        Chart C = new Chart("Const");
+        Chart int1 = new Chart("inte1");
+        Chart int2 = new Chart("inte2");
+
+
+        frame.addToLineChartPane(C);
+        frame.addToLineChartPane(int1);
+        frame.addToLineChartPane(int2);
+        ArrayList<Chart> listChart = new ArrayList<>();
+        listChart.add(C);
+        listChart.add(int1);
+        listChart.add(int2);
+
+        double t = 0;
+        double h = 0;
+        listeComposant.forEach(block -> block.init());
+        listeComposant.forEach(comp -> comp.setTr(comp.avancement()));
+        while (t < tfin) {
+            C.addDataToSeries(t,((Constante)listeComposant.get(0)).val);
+            int1.addDataToSeries(t,((IntegrateurEventDiscret)listeComposant.get(1)).val);
+            h = ((IntegrateurEventDiscret)listeComposant.get(2)).val;
+            int2.addDataToSeries(t,h);
+
+            if(h<=0 && ((IntegrateurEventDiscret)listeComposant.get(1)).val <=0){
+                ((IntegrateurEventDiscret)listeComposant.get(1)).val = ((IntegrateurEventDiscret)listeComposant.get(1)).val * -0.5;
+            }
+//            int i = 0;
+//            for (Chart c : listChart) {
+//                c.addDataToSeries(t,);
+//            }
+//                if(i<=0){
+//                    c.addDataToSeries(t,((Step)listeComposant.get(i)).valeurCourante);
+//                }else if(i==4) {
+//                    c.addDataToSeries(t,((adder4I)listeComposant.get(i)).res);
+//                }else if(i==5){
+//                    c.addDataToSeries(t,((IntegrateurEventDiscret)listeComposant.get(i)).val);
+//                }else if(i==6){
+//                    c.addDataToSeries(t,((IntegrateurTempsDiscret)listeComposant.get(i)).val);
+//                }
+//
+//                i++;
+//            }
+//            s1.addDataToSeries(t,((Step)listeComposant.get(0)).valeurCourante);
+            ArrayList<Block> listeComposantImms = new ArrayList<>();
+            ArrayList<Double> listeTr = new ArrayList<>();
+            double tr_min = 0;
+            listeComposant.forEach(comp -> listeTr.add(comp.getTr()));
+            //System.out.println(listeTr);
+            tr_min = Collections.min(listeTr);
+//            int minIndex = listeTr.indexOf(tr_min);
+
+            for (Block comp : listeComposant)
+                if (tr_min == comp.getTr())
+                    listeComposantImms.add(comp);
+//            System.out.println(listeComposantImms);
+            t = t + tr_min;
+            System.out.println("temps : " + t + "tr_min "+tr_min);
+//            for (Block comp : listeComposant) {
+//                comp.listeSortie.forEach(sortie -> System.out.println(sortie.valeur));
+//                System.out.println(comp.getE());
+//                System.out.println(comp.getTr());
+//            }
+            for (Block comp : listeComposant) {
+                comp.setE(comp.getE() + tr_min);
+                comp.setTr(comp.getTr() - tr_min);
+            }
+//            for (Block comp : listeComposant) {
+//                System.out.println(comp);
+//                System.out.println(comp.getE());
+//                System.out.println(comp.getTr());
+//            }
+            // pour lancé une seul fois le code pendant le dev
+            for (Block comp : listeComposantImms)
+                comp.sortie();
+
+//            for (Block comp : listeComposant) {
+//                System.out.println(comp);
+//                comp.listeEntree.forEach(entree -> {
+//                    System.out.println(entree.getNom() + " : " + entree.getFlag());
+//                });
+//            }
+
+            ArrayList<Entree> listeEntreeIns = new ArrayList<>();
+            for (Block comp : listeComposant) {
+                for (Entree e : comp.listeEntree) {
+                    if (e.getFlag()) {
+                        listeEntreeIns.add(e);
+                    }
+                }
+            }
+            System.out.println(listeEntreeIns);
+
+
+            for (Block comp : listeComposant) {
+                if (listeComposantImms.contains(comp) && !comp.entreeImpactee()) {
+//                    System.out.println("comp : "+comp);
+                    comp.interne();
+                    comp.setTl(t);
+                    comp.setE(0);
+                    comp.setTr(comp.avancement());
+                    comp.setTn(t + comp.getTr());
+
+                }
+                if (!listeComposantImms.contains(comp) && comp.entreeImpactee()) {
+                    comp.externe();
+                    comp.setTl(t);
+                    comp.setE(0);
+                    comp.setTr(comp.avancement());
+                    comp.setTn(t + comp.getTr());
+                }
+                if (listeComposantImms.contains(comp) && comp.entreeImpactee()) {
+                    comp.conflict();
+                    comp.setTl(t);
+                    comp.setE(0);
+                    comp.setTr(comp.avancement());
+                    comp.setTn(t + comp.getTr());
+                }
+            }
+            for (Block comp : listeComposant) {
+                comp.finCycle();
+            }
+        }
+    }
+
+    public static void ode2(){
+        Constante g = new Constante(-9.81);
+        IntegrateurEventDiscret inte1 = new IntegrateurEventDiscret(0.1);
+        IntegrateurEventDiscret inte2 = new IntegrateurEventDiscret(0.1);
+        inte2.val = 10;
+        g.constante.ajoutObservateur(inte1.pval);
+        inte1.res.ajoutObservateur(inte2.pval);
+
+        double tfin = 3;
+        ArrayList<Block> listeComposant = new ArrayList<>();
+        listeComposant.add(g);
+        listeComposant.add(inte1);
+        listeComposant.add(inte2);
+
+        ordonnanceurOde2(listeComposant,tfin);
+
+    }
+    public static void ordonnanceurOde2(ArrayList<Block> listeComposant, double tfin) {
+        ChartFrame frame = new ChartFrame("EnsembleStepper + adder + iintegrateur","4 Steppper +add +int");
+        Chart C = new Chart("Const");
+        Chart int1 = new Chart("inte1");
+        Chart int2 = new Chart("inte2");
+
+
+        frame.addToLineChartPane(C);
+        frame.addToLineChartPane(int1);
+        frame.addToLineChartPane(int2);
+        ArrayList<Chart> listChart = new ArrayList<>();
+        listChart.add(C);
+        listChart.add(int1);
+        listChart.add(int2);
+
+        double t = 0;
+        listeComposant.forEach(block -> block.init());
+        listeComposant.forEach(comp -> comp.setTr(comp.avancement()));
+        while (t < tfin) {
+            C.addDataToSeries(t,((Constante)listeComposant.get(0)).val);
+            int1.addDataToSeries(t,((IntegrateurEventDiscret)listeComposant.get(1)).val);
+            int2.addDataToSeries(t,((IntegrateurEventDiscret)listeComposant.get(2)).val);
+//            int i = 0;
+//            for (Chart c : listChart) {
+//                c.addDataToSeries(t,);
+//            }
+//                if(i<=0){
+//                    c.addDataToSeries(t,((Step)listeComposant.get(i)).valeurCourante);
+//                }else if(i==4) {
+//                    c.addDataToSeries(t,((adder4I)listeComposant.get(i)).res);
+//                }else if(i==5){
+//                    c.addDataToSeries(t,((IntegrateurEventDiscret)listeComposant.get(i)).val);
+//                }else if(i==6){
+//                    c.addDataToSeries(t,((IntegrateurTempsDiscret)listeComposant.get(i)).val);
+//                }
+//
+//                i++;
+//            }
+//            s1.addDataToSeries(t,((Step)listeComposant.get(0)).valeurCourante);
+            ArrayList<Block> listeComposantImms = new ArrayList<>();
+            ArrayList<Double> listeTr = new ArrayList<>();
+            double tr_min = 0;
+            listeComposant.forEach(comp -> listeTr.add(comp.getTr()));
+            //System.out.println(listeTr);
+            tr_min = Collections.min(listeTr);
+//            int minIndex = listeTr.indexOf(tr_min);
+
+            for (Block comp : listeComposant)
+                if (tr_min == comp.getTr())
+                    listeComposantImms.add(comp);
+//            System.out.println(listeComposantImms);
+            t = t + tr_min;
+            System.out.println("temps : " + t + "tr_min "+tr_min);
+//            for (Block comp : listeComposant) {
+//                comp.listeSortie.forEach(sortie -> System.out.println(sortie.valeur));
+//                System.out.println(comp.getE());
+//                System.out.println(comp.getTr());
+//            }
+            for (Block comp : listeComposant) {
+                comp.setE(comp.getE() + tr_min);
+                comp.setTr(comp.getTr() - tr_min);
+            }
+//            for (Block comp : listeComposant) {
+//                System.out.println(comp);
+//                System.out.println(comp.getE());
+//                System.out.println(comp.getTr());
+//            }
+            // pour lancé une seul fois le code pendant le dev
+            for (Block comp : listeComposantImms)
+                comp.sortie();
+
+//            for (Block comp : listeComposant) {
+//                System.out.println(comp);
+//                comp.listeEntree.forEach(entree -> {
+//                    System.out.println(entree.getNom() + " : " + entree.getFlag());
+//                });
+//            }
+
+            ArrayList<Entree> listeEntreeIns = new ArrayList<>();
+            for (Block comp : listeComposant) {
+                for (Entree e : comp.listeEntree) {
+                    if (e.getFlag()) {
+                        listeEntreeIns.add(e);
+                    }
+                }
+            }
+            System.out.println(listeEntreeIns);
+
+
+            for (Block comp : listeComposant) {
+                if (listeComposantImms.contains(comp) && !comp.entreeImpactee()) {
+//                    System.out.println("comp : "+comp);
+                    comp.interne();
+                    comp.setTl(t);
+                    comp.setE(0);
+                    comp.setTr(comp.avancement());
+                    comp.setTn(t + comp.getTr());
+
+                }
+                if (!listeComposantImms.contains(comp) && comp.entreeImpactee()) {
+                    comp.externe();
+                    comp.setTl(t);
+                    comp.setE(0);
+                    comp.setTr(comp.avancement());
+                    comp.setTn(t + comp.getTr());
+                }
+                if (listeComposantImms.contains(comp) && comp.entreeImpactee()) {
+                    comp.conflict();
+                    comp.setTl(t);
+                    comp.setE(0);
+                    comp.setTr(comp.avancement());
+                    comp.setTn(t + comp.getTr());
+                }
+            }
+            for (Block comp : listeComposant) {
+                comp.finCycle();
+            }
+        }
+    }
+
     public static void comparaissonIntegrateur(){
         Step s1 = new Step(1,-3,0.65);
         s1.setNom("s1");
